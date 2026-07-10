@@ -1,0 +1,9 @@
+{
+  "name": "geo-report",
+  "description": "Generate a GEO answer-engine visibility baseline report from promptingco prompts and cited-sources exports, in the two-page Prompting Company template.",
+  "version": "1.0.0",
+  "author": {
+    "name": "The Prompting Company"
+  },
+  "keywords": ["geo", "aeo", "report", "share-of-voice", "promptingco"]
+}
