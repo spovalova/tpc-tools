@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<!-- GEO baseline template. Fill every {{PLACEHOLDER}} and each table body.
+     Rules: exactly 2 pages, NO em/en dashes, competitors by SoV with product's
+     true rank, Insight columns "Highlight / Data from TPC runs", 3 plain
+     one-line recommendations. Render: python3 -m weasyprint report.html report.pdf -->
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<style>
+  @page { size: A4; margin: 11mm 14mm 10mm 14mm; }
+  * { box-sizing: border-box; }
+  body { font-family: -apple-system, "Helvetica Neue", Arial, sans-serif; color: #1a1a1a; font-size: 8.8pt; line-height: 1.3; margin: 0; }
+  .eyebrow { font-size: 7.5pt; letter-spacing: .18em; color: #8a8a8a; font-weight: 700; text-transform: uppercase; }
+  h1 { font-size: 23pt; line-height: 1.08; margin: 4px 0 0; font-weight: 800; max-width: 70%; }
+  .brandmark { position: absolute; top: 0; right: 0; text-align: right; font-size: 8pt; letter-spacing: .14em; font-weight: 700; line-height: 1.5; text-transform: uppercase; }
+  .header { position: relative; }
+  .rule { border: 0; border-top: 2px solid #1a1a1a; margin: 10px 0 0; }
+  .lede { margin: 7px 0 0; font-size: 9.4pt; }
+  .callout { background: #f1f1ef; border-radius: 4px; padding: 6px 11px; margin: 7px 0 0; font-size: 8pt; color: #4a4a4a; }
+  .callout b { color: #1a1a1a; }
+  h2 { font-size: 12pt; margin: 13px 0 0; font-weight: 800; }
+  h2 .num { margin-right: 6px; }
+  .h2rule { border: 0; border-top: 1.5px solid #1a1a1a; margin: 4px 0 8px; }
+  .headline { font-size: 9pt; margin: 0 0 8px; }
+  .headline b { font-weight: 800; }
+  .muted { color: #9a9a9a; }
+  .cards { display: flex; gap: 9px; margin: 0 0 4px; }
+  .card { flex: 1; border: 1px solid #e3e3e0; border-radius: 5px; padding: 8px 10px; }
+  .card .big { font-size: 16pt; font-weight: 800; line-height: 1; }
+  .card .lbl { font-size: 7.2pt; color: #777; margin-top: 4px; }
+  h3 { font-size: 9.4pt; margin: 8px 0 5px; font-weight: 800; }
+  table { width: 100%; border-collapse: collapse; font-size: 8.4pt; }
+  th { background: #1a1a1a; color: #fff; text-align: left; padding: 4px 9px; font-weight: 700; font-size: 7.8pt; }
+  th.r, td.r { text-align: right; }
+  td { padding: 2.5px 9px; border-bottom: 1px solid #ededed; }
+  tr.hl td { background: #fbf1e9; font-weight: 800; }
+  tr.total td { background: #faf6ef; font-weight: 800; border-top: 1px solid #e3e3e0; }
+  .twocol { display: flex; gap: 22px; }
+  .twocol > div { flex: 1; }
+  .insight th:first-child { width: 26%; }
+  .insight td { padding-top: 2px; padding-bottom: 2px; vertical-align: top; }
+  .insight td:first-child { font-weight: 800; }
+  .insight code, .headline code { background: #f0f0ee; border-radius: 3px; padding: 0 3px; font-family: "SF Mono", Menlo, monospace; font-size: 7.8pt; }
+  .steps { counter-reset: s; padding: 0; margin: 4px 0 0; list-style: none; }
+  .steps li { counter-increment: s; margin: 0 0 8px; padding-left: 22px; position: relative; font-size: 9pt; }
+  .steps li::before { content: counter(s) "."; position: absolute; left: 0; font-weight: 800; }
+  .sources { font-size: 7.4pt; color: #6a6a6a; margin-top: 12px; border-top: 1px solid #ededed; padding-top: 8px; white-space: nowrap; }
+  .sources b { color: #1a1a1a; }
+  .pagebreak { page-break-before: always; }
+  .note { font-size: 7.4pt; color: #9a9a9a; margin-top: 4px; line-height: 1.4; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="brandmark">THE<br>PROMPTING<br>COMPANY</div>
+  <div class="eyebrow">GEO BASELINE</div>
+  <h1>{{PRODUCT}}: Answer-Engine Visibility Baseline</h1>
+</div>
+<hr class="rule">
+
+<p class="lede">{{PRODUCT}} wants to be the {{CATEGORY}} an AI recommends. This GEO baseline measures how often the tracked engines ({{ENGINE_LIST}}) name {{PRODUCT}} today, where it wins and loses, and what the models cite.</p>
+
+<div class="callout"><b>Baseline assessment.</b> {{ASSESSMENT_SENTENCE}} · The Prompting Company · {{MONTH_YEAR}}</div>
+
+<h2><span class="num">1</span>GEO baseline · answer-engine visibility</h2>
+<hr class="h2rule">
+
+<p class="headline"><b>Headline:</b> {{HEADLINE_SENTENCE}}</p>
+
+<div class="cards">
+  <div class="card"><div class="big">{{SOV}}</div><div class="lbl">Blended product SoV ({{N_ENGINES}} engines)</div></div>
+  <div class="card"><div class="big">{{CARD2_BIG}}</div><div class="lbl">{{CARD2_LBL}}</div></div>
+  <div class="card"><div class="big">{{TOP_TOPIC_SOV}}</div><div class="lbl">{{TOP_TOPIC}}, strongest topic</div></div>
+  <div class="card"><div class="big">{{WEAK_ENGINE_SOV}}</div><div class="lbl">{{WEAK_ENGINE}}, weakest engine</div></div>
+</div>
+
+<h3>By engine</h3>
+<table>
+  <tr><th>Engine</th><th class="r">SoV</th><th class="r">Mentions / Runs</th></tr>
+  <!-- one row per engine, sorted by SoV desc -->
+  {{ENGINE_ROWS}}
+  <tr class="total"><td>Blended</td><td class="r">{{SOV}}</td><td class="r">{{TOTAL_MENTIONS}} / {{TOTAL_RUNS}}</td></tr>
+</table>
+
+<div class="twocol" style="margin-top:9px;">
+  <div>
+    <h3 style="margin-top:0;">By topic</h3>
+    <table>
+      <tr><th>Topic</th><th class="r">Prompts</th><th class="r">SoV</th></tr>
+      {{TOPIC_ROWS}}
+    </table>
+  </div>
+  <div>
+    <h3 style="margin-top:0;">Competitive set <span class="muted" style="font-weight:400;font-size:7.5pt;">(pinned competitors)</span></h3>
+    <table>
+      <tr><th>Brand</th><th class="r">SoV</th></tr>
+      {{COMPETITOR_ROWS}}
+      <tr class="hl"><td>{{PRODUCT}} (#{{RANK}} overall)</td><td class="r">{{SOV}}</td></tr>
+    </table>
+    <p class="note">Competitors are {{PRODUCT}}'s pinned set, ordered by share of voice; {{PRODUCT}} is shown last with its #{{RANK}} position in the full tracked industry ranking.</p>
+  </div>
+</div>
+
+<h3>Insight: winning, losing, competitors, citations</h3>
+<table class="insight">
+  <tr><th>Highlight</th><th>Data from TPC runs</th></tr>
+  <tr><td>Winning</td><td>{{WINNING}}</td></tr>
+  <tr><td>Losing</td><td>{{LOSING}}</td></tr>
+  <tr><td>Competition</td><td>{{COMPETITION}}</td></tr>
+  <tr><td>What's cited?</td><td>{{WHATS_CITED}}</td></tr>
+</table>
+
+<!-- PAGE 2 -->
+<div class="pagebreak"></div>
+
+<div class="twocol">
+  <div>
+    <h3 style="margin-top:0;">What the models cite: top domains</h3>
+    <table>
+      <tr><th>Domain</th><th>Type</th><th class="r">Cites</th><th class="r">Share</th></tr>
+      {{DOMAIN_ROWS}}
+    </table>
+  </div>
+  <div>
+    <h3 style="margin-top:0;">Citation mix &amp; engines</h3>
+    <table>
+      <tr><th>Source type</th><th class="r">Share</th></tr>
+      <tr><td>Third-party / neutral</td><td class="r">{{MIX_THIRD}}</td></tr>
+      <tr><td>Competitor-owned</td><td class="r">{{MIX_COMPETITOR}}</td></tr>
+      <tr class="hl"><td>{{PRODUCT}}-owned</td><td class="r">{{MIX_OWNED}}</td></tr>
+    </table>
+    <p class="note">{{MIX_DEFINITION}}</p>
+    <table style="margin-top:10px;">
+      <tr><th>Engine</th><th class="r">Citations</th></tr>
+      {{ENGINE_CITATION_ROWS}}
+    </table>
+    <p class="note">{{ENGINE_CITATION_NOTE}}</p>
+  </div>
+</div>
+
+<h2><span class="num">2</span>Recommended next steps</h2>
+<hr class="h2rule">
+<ol class="steps">
+  <li>{{STEP_1}}</li>
+  <li>{{STEP_2}}</li>
+  <li>{{STEP_3}}</li>
+</ol>
+
+<p class="sources"><b>Sources.</b> {{PRODUCT}} simulation, prompts and cited-sources exports, content-analytics dashboard, app.promptingco.com, {{DATE}}.</p>
+
+</body>
+</html>
