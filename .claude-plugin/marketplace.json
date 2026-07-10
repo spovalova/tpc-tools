@@ -1,0 +1,17 @@
+{
+  "name": "tpc-tools",
+  "owner": {
+    "name": "The Prompting Company"
+  },
+  "plugins": [
+    {
+      "name": "geo-report",
+      "source": "./plugins/geo-report",
+      "description": "Generate a GEO answer-engine visibility baseline report from promptingco prompts and cited-sources exports, in the two-page Prompting Company template.",
+      "version": "1.0.0",
+      "author": {
+        "name": "The Prompting Company"
+      }
+    }
+  ]
+}
